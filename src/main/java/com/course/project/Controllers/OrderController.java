@@ -105,6 +105,32 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity<String> Save(@PathVariable long id, @RequestBody OrderCreate orderCreate, @RequestHeader("Authorization") String token)
+    {
+        try{
+            String secretKey = "aaskldhj12fasdfas3123kjdlf3hajsdhfuawe112323hkjsadhfjkhuaksjfh";
+            byte[] keyBytes = Base64.getDecoder().decode(secretKey.getBytes(StandardCharsets.UTF_8));
+            var key = new SecretKeySpec(keyBytes, "HmacSHA256");
+            String jwtToken = token.substring(7);
+            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken).getBody();
+            String userEmail = claims.getSubject();
+            var order= mapper.MapOrderFromDto(orderCreate);
+            order.setId(id);
+            if (order == null)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недостаточно товаров");
+            order.setUser(userService.Get(userEmail));
+            order.setStatus(statusService.Get("Create"));
+            orderService.Save(order);
+            return ResponseEntity.ok("Заказ создан");
+
+        }catch(Exception ex)
+        {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<String> Delete(@PathVariable long id){
         try{

@@ -2,9 +2,11 @@ package com.course.project.Dto.Mapper;
 import com.course.project.Models.*;
 import com.course.project.Dto.*;
 import com.course.project.Services.Impl.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Service
 public class Mapper {
     private ProductService productService;
     private OrderService orderService;
