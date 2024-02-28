@@ -1,11 +1,13 @@
 package com.course.project.Dto;
 
 import com.course.project.Models.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class UserUpdate {
     private long id;
     private String email;
     private String password;
+    @JsonManagedReference
     private Role role;
 
     public long getId() {

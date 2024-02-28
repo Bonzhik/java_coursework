@@ -43,6 +43,7 @@ public class UserController {
             }
             return ResponseEntity.ok(usersRead);
         }catch (Exception ex){
+            System.out.println("ОШИБКА ---->"+ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -56,7 +57,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping("{byEmail}")
+    @GetMapping("byEmail/{email}")
     public ResponseEntity<UserRead> Get(@PathVariable String email)
     {
         try{

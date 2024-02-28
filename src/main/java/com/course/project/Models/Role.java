@@ -1,5 +1,6 @@
 package com.course.project.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class Role {
     private long id;
     private String title;
     @OneToMany(mappedBy = "role")
+    @JsonBackReference
     private List<User> users = new ArrayList<>();
 
     public Role() {

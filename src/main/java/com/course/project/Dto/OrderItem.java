@@ -1,6 +1,9 @@
 package com.course.project.Dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 public class OrderItem {
+    @JsonManagedReference
     private ProductRead product;
     private long quantity;
 

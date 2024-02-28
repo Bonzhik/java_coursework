@@ -1,5 +1,6 @@
 package com.course.project.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -12,6 +13,7 @@ public class Category {
     private long id;
     private String title;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<CategoryProduct> categoryProducts = new HashSet<>();
 
     public Category() {

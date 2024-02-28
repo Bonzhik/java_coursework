@@ -19,6 +19,7 @@ public class StatusController {
 
     @GetMapping
     public ResponseEntity<List<Status>> GetAll(){
+
         return ResponseEntity.ok(statusService.GetAll());
     }
 

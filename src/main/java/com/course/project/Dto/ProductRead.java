@@ -1,5 +1,8 @@
 package com.course.project.Dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +11,7 @@ public class ProductRead {
     private String title;
     private long quantity;
     private long price;
+    @JsonManagedReference
     private List<CategoryRead> categories = new ArrayList<>();;
 
     public long getId() {

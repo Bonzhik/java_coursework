@@ -1,5 +1,7 @@
 package com.course.project.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +23,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Order> orders = new ArrayList<>();
 
     public User() {

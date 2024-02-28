@@ -1,6 +1,8 @@
 package com.course.project.Dto;
 
 import com.course.project.Models.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,9 @@ public class UserRead {
     private long id;
     private String email;
     private String password;
+    @JsonManagedReference
     private Role role;
+    @JsonManagedReference
     private List<OrderRead> orders = new ArrayList<>();;
 
     public long getId() {

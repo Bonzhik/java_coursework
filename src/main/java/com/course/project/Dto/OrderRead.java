@@ -2,6 +2,8 @@ package com.course.project.Dto;
 
 import com.course.project.Models.Status;
 import com.course.project.Models.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +11,10 @@ import java.util.List;
 public class OrderRead {
     private long id;
     private Status status;
+    @JsonManagedReference
     private User user;
-    private List<OrderItem> products = new ArrayList<>();;
+    @JsonManagedReference
+    private List<OrderItem> products = new ArrayList<>();
 
     public long getId() {
         return id;
