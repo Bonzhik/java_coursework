@@ -2,6 +2,7 @@ package com.course.project.Models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class Category {
     private long id;
     private String title;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CategoryProduct> categoryProducts;
+    private Set<CategoryProduct> categoryProducts = new HashSet<>();
 
     public Category() {
     }

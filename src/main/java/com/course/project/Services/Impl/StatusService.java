@@ -16,7 +16,7 @@ public class StatusService implements IStatusService {
 
     @Override
     public Status Get(long id) {
-        return null;
+        return statusRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -26,16 +26,26 @@ public class StatusService implements IStatusService {
 
     @Override
     public List<Status> GetAll() {
-        return null;
+        return statusRepository.findAll();
     }
 
     @Override
     public Boolean Save(Status status) {
-        return null;
+        try{
+            statusRepository.save(status);
+            return true;
+        }catch (Exception ex){
+            return false;
+        }
     }
 
     @Override
     public Boolean Delete(long id) {
-        return null;
+        try{
+            statusRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 }

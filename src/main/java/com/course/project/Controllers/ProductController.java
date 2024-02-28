@@ -1,5 +1,6 @@
 package com.course.project.Controllers;
 
+import com.course.project.Dto.Mapper.Mapper;
 import com.course.project.Dto.ProductCreate;
 import com.course.project.Dto.ProductRead;
 import com.course.project.Models.Category;
@@ -23,16 +24,23 @@ import java.util.Set;
 public class ProductController {
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final Mapper mapper;
 
-    public ProductController(CategoryService categoryService, ProductService productService) {
+    public ProductController(CategoryService categoryService, ProductService productService, Mapper mapper) {
         this.categoryService = categoryService;
         this.productService = productService;
+        this.mapper = mapper;
     }
     @GetMapping
     public ResponseEntity<List<ProductRead>> GetAll(){
         try{
-            List<ProductRead> products = new ArrayList<ProductRead>();
-            return ResponseEntity.ok(products);
+            List<ProductRead> productsRead = new ArrayList<ProductRead>();
+            var products = productService.GetAll();
+            for(var product : products){
+                var currentProductRead = mapper.MapProductToDto(product);
+                productsRead.add(currentProductRead);
+            }
+            return ResponseEntity.ok(productsRead);
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -40,17 +48,22 @@ public class ProductController {
     @GetMapping("{id}")
     public ResponseEntity<ProductRead> Get(@PathVariable long id){
         try{
-            //ProductRead product = new product();
-            //return ResponseEntity.ok(product);
+            ProductRead product = mapper.MapProductToDto(productService.Get(id).orElseThrow());
+            return ResponseEntity.ok(product);
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping("byCategory")
-    public ResponseEntity<List<ProductRead>> GetByCategories(@RequestParam List<Long> categories){
+    @GetMapping("byCategory/{categoryId}")
+    public ResponseEntity<List<ProductRead>> GetByCategories(@PathVariable long categoryId){
         try{
-            List<ProductRead> products = new ArrayList<ProductRead>();
-            return ResponseEntity.ok(products);
+            List<ProductRead> productsRead = new ArrayList<ProductRead>();
+            var products = productService.GetByCategory(categoryId);
+            for(var product : products){
+                var currentProductRead = mapper.MapProductToDto(product);
+                productsRead.add(currentProductRead);
+            }
+            return ResponseEntity.ok(productsRead);
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -68,18 +81,7 @@ public class ProductController {
     public ResponseEntity<ProductCreate> Save(@RequestBody ProductCreate productDto)
     {
         try{
-            var product = new Product();
-            product.setTitle(productDto.getTitle());
-            product.setPrice(productDto.getPrice());
-            product.setQuantity(productDto.getPrice());
-            for (var categoryId : productDto.getCategories())
-            {
-                Category category = categoryService.Get(categoryId).orElseThrow();
-                CategoryProduct categoryProduct = new CategoryProduct();
-                categoryProduct.setCategory(category);
-                categoryProduct.setProduct(product);
-                product.addCategoryProduct(categoryProduct);
-            }
+            var product = mapper.MapProductFromDto(productDto);
             productService.Save(product);
             return ResponseEntity.ok(productDto);
         }catch(Exception ex)
@@ -91,19 +93,8 @@ public class ProductController {
     public ResponseEntity<ProductCreate> Save(@PathVariable long id, @RequestBody ProductCreate productDto)
     {
         try{
-            var product = new Product();
+            var product = mapper.MapProductFromDto(productDto);
             product.setId(id);
-            product.setTitle(productDto.getTitle());
-            product.setPrice(productDto.getPrice());
-            product.setQuantity(productDto.getPrice());
-            for (var categoryId : productDto.getCategories())
-            {
-                Category category = categoryService.Get(categoryId).orElseThrow();
-                CategoryProduct categoryProduct = new CategoryProduct();
-                categoryProduct.setCategory(category);
-                categoryProduct.setProduct(product);
-                product.addCategoryProduct(categoryProduct);
-            }
             productService.Save(product);
             return ResponseEntity.ok(productDto);
         }catch(Exception ex)

@@ -8,8 +8,5 @@ public interface IUserService {
     User Get(long id);
     User Get(String email);
     List<User> GetAll();
-
-    Boolean Save(User user);
-
     Boolean Delete(long id);
 }

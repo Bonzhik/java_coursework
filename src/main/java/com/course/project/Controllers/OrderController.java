@@ -1,6 +1,8 @@
 package com.course.project.Controllers;
 
+import com.course.project.Dto.Mapper.Mapper;
 import com.course.project.Dto.OrderCreate;
+import com.course.project.Dto.OrderRead;
 import com.course.project.Models.Order;
 import com.course.project.Models.OrderProduct;
 import com.course.project.Services.Impl.OrderService;
@@ -20,6 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/order")
@@ -28,11 +31,18 @@ public class OrderController {
     private ProductService productService;
     private UserService userService;
     private StatusService statusService;
-    public OrderController(OrderService orderService, ProductService productService, UserService userService,StatusService statusService) {
+    private Mapper mapper;
+    public OrderController(
+            OrderService orderService,
+            ProductService productService,
+            UserService userService,
+            StatusService statusService,
+            Mapper mapper) {
         this.orderService = orderService;
         this.productService = productService;
         this.userService = userService;
         this.statusService = statusService;
+        this.mapper = mapper;
     }
 
     @PostMapping
@@ -46,22 +56,11 @@ public class OrderController {
             String jwtToken = token.substring(7);
             Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken).getBody();
             String userEmail = claims.getSubject();
-            var order= new Order();
+            var order= mapper.MapOrderFromDto(orderCreate);
+            if (order == null)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недостаточно товаров");
             order.setUser(userService.Get(userEmail));
             order.setStatus(statusService.Get("Create"));
-            for(int i = 0; i<orderCreate.getProductsInOrder().length ; i++){
-                var currentProduct = productService.Get(orderCreate.getProductsInOrder()[i][0]).orElseThrow();
-                if (currentProduct.getQuantity() < orderCreate.getProductsInOrder()[i][1]){
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недостаточно товаров");
-                }
-                OrderProduct orderProduct = new OrderProduct();
-                orderProduct.setOrder(order);
-                orderProduct.setProduct(currentProduct);
-                orderProduct.setQuantity(orderCreate.getProductsInOrder()[i][1]);
-                currentProduct.setQuantity(currentProduct.getQuantity() - orderCreate.getProductsInOrder()[i][1]);
-                productService.Save(currentProduct);
-                order.addOrderProduct(orderProduct);
-            }
             orderService.Save(order);
             return ResponseEntity.ok("Заказ создан");
 
@@ -73,8 +72,12 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderRead>> GetAll(){
         try{
-            var orders = new ArrayList<OrderRead>();
-            return ResponseEntity.ok(orders);
+            var ordersRead = new ArrayList<OrderRead>();
+            var orders = orderService.GetAll();
+            for(var order : orders){
+                ordersRead.add(mapper.MapOrderToDto(order));
+            }
+            return ResponseEntity.ok(ordersRead);
         }catch(Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -83,6 +86,7 @@ public class OrderController {
     public ResponseEntity<OrderRead> Get(@PathVariable long id)
     {
         try{
+            var order = mapper.MapOrderToDto(orderService.Get(id));
             return ResponseEntity.ok(order);
         }catch(Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -91,8 +95,12 @@ public class OrderController {
     @GetMapping("byuser/{userid}")
     public ResponseEntity<List<OrderRead>> GetByUser(@PathVariable long userid){
         try{
-            var orders = new ArrayList<OrderRead>();
-            return ResponseEntity.ok(orders);
+            var ordersRead = new ArrayList<OrderRead>();
+            var orders = orderService.GetByUser(userid);
+            for(var order : orders){
+                ordersRead.add(mapper.MapOrderToDto(order));
+            }
+            return ResponseEntity.ok(ordersRead);
         }catch(Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

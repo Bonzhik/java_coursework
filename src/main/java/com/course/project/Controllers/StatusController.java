@@ -1,5 +1,6 @@
 package com.course.project.Controllers;
 
+import com.course.project.Dto.StatusCreate;
 import com.course.project.Models.Status;
 import com.course.project.Services.Impl.StatusService;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class StatusController {
     public ResponseEntity<Status> Save(@RequestBody StatusCreate statusCreate)
     {
         var status = new Status();
-        status.setTitle(statusCreate.title);
+        status.setTitle(statusCreate.getTitle());
         if (!statusService.Save(status)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(status);
         }
@@ -35,8 +36,7 @@ public class StatusController {
     public ResponseEntity<Status> Save(@PathVariable long id, @RequestBody StatusCreate statusCreate)
     {
         var status = new Status();
-        status.setTitle(statusCreate.title);
-        System.out.println(statusCreate.title);
+        status.setTitle(statusCreate.getTitle());
         if (!statusService.Save(status)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(status);
         }

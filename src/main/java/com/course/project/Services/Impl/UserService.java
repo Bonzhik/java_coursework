@@ -23,7 +23,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public User Get(long id) {
-        return null;
+        return userRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -33,17 +33,16 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public List<User> GetAll() {
-        return null;
+        return userRepository.findAll();
     }
-
-    @Override
-    public Boolean Save(User user) {
-        return null;
-    }
-
     @Override
     public Boolean Delete(long id) {
-        return null;
+        try{
+            userRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 
     @Override

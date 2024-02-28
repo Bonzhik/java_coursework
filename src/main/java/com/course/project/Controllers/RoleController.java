@@ -26,7 +26,7 @@ public class RoleController {
     public ResponseEntity<Role> Save(@RequestBody RoleCreate roleCreate)
     {
         var role = new Role();
-        role.setTitle(roleCreate.title);
+        role.setTitle(roleCreate.getTitle());
         if (!roleService.Save(role)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(role);
         }
@@ -36,8 +36,7 @@ public class RoleController {
     public ResponseEntity<Role> Save(@PathVariable long id, @RequestBody RoleCreate roleCreate)
     {
         var role = new Role();
-        role.setTitle(roleCreate.title);
-        System.out.println(roleCreate.title);
+        role.setTitle(roleCreate.getTitle());
         if (!roleService.Save(role)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(role);
         }

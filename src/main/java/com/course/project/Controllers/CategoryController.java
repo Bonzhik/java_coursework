@@ -27,7 +27,7 @@ public class CategoryController {
     public ResponseEntity<Category> Save(@RequestBody CategoryCreate categoryCreate)
     {
         var category = new Category();
-        category.setTitle(categoryCreate.title);
+        category.setTitle(categoryCreate.getTitle());
         if (!categoryService.Save(category)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(category);
         }
@@ -37,8 +37,7 @@ public class CategoryController {
     public ResponseEntity<Category> Save(@PathVariable long id, @RequestBody CategoryCreate categoryCreate)
     {
         var category = new Category();
-        category.setTitle(categoryCreate.title);
-        System.out.println(categoryCreate.title);
+        category.setTitle(categoryCreate.getTitle());
         if (!categoryService.Save(category)){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(category);
         }

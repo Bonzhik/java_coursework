@@ -1,6 +1,8 @@
 package com.course.project.Models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,7 +12,7 @@ public class Role {
     private long id;
     private String title;
     @OneToMany(mappedBy = "role")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public Role() {
     }

@@ -22,12 +22,15 @@ public class ProductService implements IProductService {
 
     @Override
     public Product Get(String title) {
-        return null;
+        return productRepository.findByTitle(title);
     }
 
+    public List<Product> GetByCategory(long id){
+        return productRepository.findByCategoryProductsCategoryId(id);
+    }
     @Override
     public List<Product> GetAll() {
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
@@ -42,6 +45,11 @@ public class ProductService implements IProductService {
 
     @Override
     public Boolean Delete(long id) {
-        return null;
+        try{
+            productRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 }

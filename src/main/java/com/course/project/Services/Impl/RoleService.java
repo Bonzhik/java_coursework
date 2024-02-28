@@ -9,35 +9,43 @@ import java.util.List;
 
 @Service
 public class RoleService implements IRoleService {
-    private final RoleRepository rolePepository;
+    private final RoleRepository roleRepository;
 
     public RoleService(RoleRepository rolePepository) {
-        this.rolePepository = rolePepository;
+        this.roleRepository = rolePepository;
     }
 
     @Override
     public Role Get(long id) {
-        return null;
+        return roleRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Role Get(String title) {
-        return null;
+        return roleRepository.findByTitle(title);
     }
 
     @Override
     public List<Role> GetAll() {
-        return null;
+        return roleRepository.findAll();
     }
 
     @Override
     public Boolean Save(Role role) {
-        return null;
+        try{
+            roleRepository.save(role);
+            return true;
+        }catch (Exception ex){
+            return false;
+        }
     }
-
-
     @Override
     public Boolean Delete(long id) {
-        return null;
+        try{
+            roleRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 }

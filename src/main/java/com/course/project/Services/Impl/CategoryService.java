@@ -21,7 +21,7 @@ public class CategoryService implements ICategoryService {
     }
     @Override
     public Category Get(String title) {
-        return null;
+        return categoryRepository.findByTitle(title);
     }
 
     @Override
@@ -41,7 +41,13 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Boolean Delete(long id) {
-        return null;
+    public Boolean Delete(long id)
+    {
+        try{
+            categoryRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 }

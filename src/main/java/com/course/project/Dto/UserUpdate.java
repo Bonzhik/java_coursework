@@ -1,9 +1,20 @@
 package com.course.project.Dto;
 
-public class RegisterModel {
+import com.course.project.Models.Role;
+
+public class UserUpdate {
+    private long id;
     private String email;
     private String password;
-    private String role;
+    private Role role;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -21,11 +32,11 @@ public class RegisterModel {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

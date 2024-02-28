@@ -12,7 +12,7 @@ public class Product {
     private long id;
     private String title;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderProduct> orderProducts;
+    private Set<OrderProduct> orderProducts = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CategoryProduct> categoryProducts = new HashSet<>();
     private long price;

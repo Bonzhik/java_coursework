@@ -1,16 +1,7 @@
 package com.course.project.Dto;
 
-public class CategoryRead {
-    private long id;
+public class RoleCreate {
     private String title;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;

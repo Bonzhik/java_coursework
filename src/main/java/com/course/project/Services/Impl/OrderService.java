@@ -18,12 +18,14 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order Get(long id) {
-        return null;
+        return orderRepository.findById(id).orElseThrow();
     }
-
     @Override
     public List<Order> GetAll() {
-        return null;
+        return orderRepository.findAll();
+    }
+    public List<Order> GetByUser(long id){
+        return orderRepository.findByUserId(id);
     }
 
     @Override
@@ -38,6 +40,11 @@ public class OrderService implements IOrderService {
 
     @Override
     public Boolean Delete(long id) {
-        return null;
+        try{
+            orderRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            return  false;
+        }
     }
 }

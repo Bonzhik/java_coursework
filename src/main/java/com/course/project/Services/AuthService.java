@@ -2,6 +2,7 @@ package com.course.project.Services;
 
 import com.course.project.Dto.LoginModel;
 import com.course.project.Dto.RegisterModel;
+import com.course.project.Dto.UserUpdate;
 import com.course.project.Models.User;
 import com.course.project.Repositories.RoleRepository;
 import com.course.project.Repositories.UserRepository;
@@ -32,9 +33,23 @@ public class AuthService {
     {
         User user = new User();
         try{
-            user.setEmail(userDto.email);
-            user.setPassword(passwordEncoder.encode(userDto.password));
-            user.setRole(roleRepository.findByTitle(userDto.role));
+            user.setEmail(userDto.getEmail());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRole(roleRepository.findByTitle(userDto.getRole()));
+            userRepository.save(user);
+            return true;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+    public boolean updateUser(UserUpdate userDto){
+        User user = new User();
+        try{
+            user.setId(userDto.getId());
+            user.setEmail(userDto.getEmail());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRole(userDto.getRole());
             userRepository.save(user);
             return true;
         }catch(Exception ex){
@@ -45,8 +60,8 @@ public class AuthService {
     public String signIn(LoginModel userDto)
     {
         try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email, userDto.password));
-            var user = userRepository.findByEmail(userDto.email);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
+            var user = userRepository.findByEmail(userDto.getEmail());
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
             return jwt;
