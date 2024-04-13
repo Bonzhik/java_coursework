@@ -24,6 +24,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Category> Save(@RequestBody CategoryCreate categoryCreate)
     {
         var category = new Category();
@@ -34,6 +35,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Category> Save(@PathVariable long id, @RequestBody CategoryCreate categoryCreate)
     {
         var category = new Category();
@@ -44,6 +46,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Delete(@PathVariable long id)
     {
         try{

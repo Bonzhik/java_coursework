@@ -14,6 +14,7 @@ import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,7 @@ public class OrderController {
 
     @PostMapping
     @Transactional
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> Save(@RequestBody OrderCreate orderCreate, @RequestHeader("Authorization") String token)
     {
         try{
@@ -70,6 +72,7 @@ public class OrderController {
         }
     }
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<OrderRead>> GetAll(){
         try{
             var ordersRead = new ArrayList<OrderRead>();
@@ -83,6 +86,7 @@ public class OrderController {
         }
     }
     @GetMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<OrderRead> Get(@PathVariable long id)
     {
         try{
@@ -93,6 +97,7 @@ public class OrderController {
         }
     }
     @GetMapping("byuser/{userid}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<OrderRead>> GetByUser(@PathVariable long userid){
         try{
             var ordersRead = new ArrayList<OrderRead>();
@@ -107,6 +112,7 @@ public class OrderController {
     }
     @PutMapping("{id}")
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Save(@PathVariable long id, @RequestBody OrderCreate orderCreate, @RequestHeader("Authorization") String token)
     {
         try{
@@ -132,6 +138,7 @@ public class OrderController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Delete(@PathVariable long id){
         try{
             return ResponseEntity.ok("Deleted");

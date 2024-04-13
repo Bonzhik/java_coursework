@@ -10,6 +10,7 @@ import com.course.project.Services.Impl.CategoryService;
 import com.course.project.Services.Impl.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,7 @@ public class ProductController {
         }
     }
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Delete(@PathVariable long id){
         try{
             productService.Delete(id);
@@ -78,6 +80,7 @@ public class ProductController {
         }
     }
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ProductCreate> Save(@RequestBody ProductCreate productDto)
     {
         try{
@@ -90,6 +93,7 @@ public class ProductController {
         }
     }
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ProductCreate> Save(@PathVariable long id, @RequestBody ProductCreate productDto)
     {
         try{

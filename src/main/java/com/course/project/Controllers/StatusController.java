@@ -5,6 +5,7 @@ import com.course.project.Models.Status;
 import com.course.project.Services.Impl.StatusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class StatusController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Status> Save(@RequestBody StatusCreate statusCreate)
     {
         var status = new Status();
@@ -34,6 +36,7 @@ public class StatusController {
         return ResponseEntity.ok(status);
     }
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Status> Save(@PathVariable long id, @RequestBody StatusCreate statusCreate)
     {
         var status = new Status();
@@ -44,6 +47,7 @@ public class StatusController {
         return ResponseEntity.ok(status);
     }
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Delete(@PathVariable long id)
     {
         try{

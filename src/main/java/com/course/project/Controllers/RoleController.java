@@ -5,6 +5,7 @@ import com.course.project.Models.Role;
 import com.course.project.Services.Impl.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class RoleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Role> Save(@RequestBody RoleCreate roleCreate)
     {
         var role = new Role();
@@ -33,6 +35,7 @@ public class RoleController {
         return ResponseEntity.ok(role);
     }
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Role> Save(@PathVariable long id, @RequestBody RoleCreate roleCreate)
     {
         var role = new Role();
@@ -43,6 +46,7 @@ public class RoleController {
         return ResponseEntity.ok(role);
     }
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> Delete(@PathVariable long id)
     {
         try{

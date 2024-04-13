@@ -9,6 +9,7 @@ import com.course.project.Services.Impl.RoleService;
 import com.course.project.Services.Impl.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserRead>> GetAll()
     {
         try{
@@ -48,6 +50,7 @@ public class UserController {
         }
     }
     @GetMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserRead> Get(@PathVariable long id)
     {
         try{
@@ -58,6 +61,7 @@ public class UserController {
         }
     }
     @GetMapping("byEmail/{email}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserRead> Get(@PathVariable String email)
     {
         try{
@@ -68,6 +72,7 @@ public class UserController {
         }
     }
     @PutMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserUpdate> Save(@PathVariable long id, @RequestBody RegisterModel userDto)
     {
         try{
@@ -83,6 +88,7 @@ public class UserController {
         }
     }
     @DeleteMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> Delete(@PathVariable long id)
     {
         try{
