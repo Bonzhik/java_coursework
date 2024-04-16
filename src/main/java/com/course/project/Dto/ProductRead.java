@@ -11,6 +11,13 @@ public class ProductRead {
     private String title;
     private long quantity;
     private long price;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    private String imageUrl;
     @JsonManagedReference
     private List<CategoryRead> categories = new ArrayList<>();;
 

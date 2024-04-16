@@ -40,6 +40,7 @@ public class Mapper {
     {
         var product = new Product();
         product.setTitle(productDto.getTitle());
+        product.setImageUrl(productDto.getImageUrl());
         product.setPrice(productDto.getPrice());
         product.setQuantity(productDto.getPrice());
         for (var categoryId : productDto.getCategories())
@@ -57,6 +58,7 @@ public class Mapper {
         productRead.setId(product.getId());
         productRead.setTitle(product.getTitle());
         productRead.setPrice(product.getPrice());
+        productRead.setImageUrl(product.getImageUrl());
         productRead.setQuantity(product.getQuantity());
         for (var category : product.getCategoryProducts()){
             productRead.getCategories().add(new CategoryRead(){

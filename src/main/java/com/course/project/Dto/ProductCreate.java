@@ -4,6 +4,16 @@ public class ProductCreate {
     private String title;
     private int price;
     private int quantity;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private String imageUrl;
     private long[] categories;
 
     public String getTitle() {
