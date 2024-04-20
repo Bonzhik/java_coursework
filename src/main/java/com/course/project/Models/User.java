@@ -19,6 +19,16 @@ public class User implements UserDetails {
     private long id;
     private String email;
     private String password;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    private String avatar;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

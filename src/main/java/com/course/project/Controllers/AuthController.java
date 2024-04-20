@@ -2,6 +2,7 @@ package com.course.project.Controllers;
 
 import com.course.project.Dto.LoginModel;
 import com.course.project.Dto.RegisterModel;
+import com.course.project.Dto.UserRead;
 import com.course.project.Models.User;
 import com.course.project.Services.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.signUp(signUpRequest));
     }
     @PostMapping("/signin")
-    public ResponseEntity<String> signIn(@RequestBody LoginModel signInRequest){
+    public ResponseEntity<UserRead> signIn(@RequestBody LoginModel signInRequest){
         return ResponseEntity.ok(authService.signIn(signInRequest));
     }
     @PostMapping("/refresh")

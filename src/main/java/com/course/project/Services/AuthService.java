@@ -1,11 +1,14 @@
 package com.course.project.Services;
 
 import com.course.project.Dto.LoginModel;
+import com.course.project.Dto.Mapper.Mapper;
 import com.course.project.Dto.RegisterModel;
+import com.course.project.Dto.UserRead;
 import com.course.project.Dto.UserUpdate;
 import com.course.project.Models.User;
 import com.course.project.Repositories.RoleRepository;
 import com.course.project.Repositories.UserRepository;
+import lombok.var;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +24,15 @@ public class AuthService {
     private JwtService jwtService;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private Mapper mapper;
 
-    public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RoleRepository roleRepository) {
+    public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RoleRepository roleRepository, Mapper mapper) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.roleRepository = roleRepository;
+        this.mapper = mapper;
     }
     public boolean signUp(RegisterModel userDto)
     {
@@ -57,14 +62,16 @@ public class AuthService {
             return false;
         }
     }
-    public String signIn(LoginModel userDto)
+    public UserRead signIn(LoginModel userDto)
     {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
             var user = userRepository.findByEmail(userDto.getEmail());
+            UserRead result = mapper.MapUserToDto(user);
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-            return jwt;
+            result.setToken(jwt);
+            return result;
 
         } catch (Exception ex)
         {
