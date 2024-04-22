@@ -8,7 +8,6 @@ import com.course.project.Dto.UserUpdate;
 import com.course.project.Models.User;
 import com.course.project.Repositories.RoleRepository;
 import com.course.project.Repositories.UserRepository;
-import lombok.var;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
